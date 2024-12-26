@@ -9,6 +9,7 @@ module.exports = {
         joan: ['Joan', 'serif'],
         kadwa: ['Kadwa', 'serif'],
         kaisei: ['Kaisei Decol', 'serif'],
+        inter:['Inter', 'sans-serif'],
       },
     }
   },

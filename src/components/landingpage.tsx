@@ -11,13 +11,13 @@ const LandingPage: React.FC = () => {
         <h1 className="text-8xl  mb-2 font-kalnia">AMAN</h1>
         <h1 className="text-8xl  mb-8 font-kalnia">MALIK</h1>
         <div className="flex mt-4 space-x-4">
-          <button className="bg-[#98DED9] text-black px-4 py-1 rounded-md w-28">
+          <button className="bg-[#98DED9] text-black px-4 py-1 rounded-md w-28 font-inter">
             About Me
           </button>
           <a
             href="#"
             download
-            className="border border-white px-4 py-1 rounded-md w-28 text-center"
+            className="border border-white px-4 py-1 rounded-md w-28 text-center font-inter"
           >
             CV
           </a>
@@ -35,7 +35,7 @@ const LandingPage: React.FC = () => {
             >
               <circle cx="12" cy="12" r="10" />
             </svg>
-            <span className="text-xl group-hover:text-[#98DED9] transition duration-200 ease-in-out">
+            <span className="text-xl group-hover:text-[#98DED9] transition duration-200 ease-in-out font-kaisei">
               Resume
             </span>
           </a>
@@ -51,7 +51,7 @@ const LandingPage: React.FC = () => {
             >
               <circle cx="12" cy="12" r="10" />
             </svg>
-            <span className="text-xl group-hover:text-[#98DED9] transition duration-200 ease-in-out">
+            <span className="text-xl group-hover:text-[#98DED9] transition duration-200 ease-in-out font-kaisei">
               Education
             </span>
           </a>
@@ -67,7 +67,7 @@ const LandingPage: React.FC = () => {
             >
               <circle cx="12" cy="12" r="10" />
             </svg>
-            <span className="text-xl group-hover:text-[#98DED9] transition duration-200 ease-in-out">
+            <span className="text-xl group-hover:text-[#98DED9] transition duration-200 ease-in-out font-kaisei">
               Projects
             </span>
           </a>
