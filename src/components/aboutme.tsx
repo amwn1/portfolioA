@@ -1,5 +1,7 @@
 import React from "react";
-import profileImage from "../resources/images/profile21.png"; // Replace with your image path
+import profileImage from "../resources/images/profile21.png"; 
+import { FontAwesomeIcon } from "@fortawesome/react-fontawesome";
+import { faLinkedin, faInstagram, faGithub } from "@fortawesome/free-brands-svg-icons";
 
 const AboutMe: React.FC = () => {
   return (
@@ -17,19 +19,19 @@ const AboutMe: React.FC = () => {
         </div>
         {/* Content Box */}
         <div className="bg-[#98DED9] p-8 md:p-12 shadow-lg max-w-lg z-10 relative ml-[-50px] md:ml-[-80px]">
-          <h1 className="text-3xl font-kalnia mb-4">ABOUT ME</h1>
+          <h1 className="text-3xl font-kalnia mb-10">ABOUT ME</h1>
           <p className="text-md font-joan">
             I am a dedicated software developer with a knack for creating efficient and scalable solutions. My expertise spans both front-end and back-end technologies, allowing me to deliver comprehensive and user-friendly applications. I thrive in collaborative environments, leveraging agile methodologies to enhance team productivity and drive innovation. My commitment to continuous learning ensures I stay ahead of industry trends, bringing the latest insights to every project. With a focus on quality and performance, I am passionate about building software that not only meets but exceeds expectations. Let's connect to explore how I can contribute to your next groundbreaking project.
           </p>
           <div className="flex space-x-4 mt-4">
-            <a href="#" className="text-black">
-              <i className="fab fa-linkedin"></i>
+            <a href="https://www.linkedin.com" className="text-white">
+              <FontAwesomeIcon icon={faLinkedin} size="2x" />
             </a>
-            <a href="#" className="text-black">
-              <i className="fab fa-instagram"></i>
+            <a href="https://www.instagram.com" className="text-white">
+              <FontAwesomeIcon icon={faInstagram} size="2x" />
             </a>
-            <a href="#" className="text-black">
-              <i className="fab fa-github"></i>
+            <a href="https://www.github.com" className="text-white">
+              <FontAwesomeIcon icon={faGithub} size="2x" />
             </a>
           </div>
         </div>
