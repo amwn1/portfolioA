@@ -106,9 +106,10 @@ const TileOverlay: React.FC<OverlayProps> = ({ project, initialRect, onClose }) 
           <div className="border-2 border-white">
             <ProjectCard imageUrl={project.imageUrl} alt={project.alt} />
           </div>
-          <h1 className="text-7xl font-kalnia text-white self-center">
-            {project.alt}
-          </h1>
+          <h1 className="text-7xl font-kalnia text-white self-center whitespace-nowrap">
+  {project.alt}
+</h1>
+
         </div>
 
         {/* Second row: description, testimonial, rating, etc., left-aligned below */}
