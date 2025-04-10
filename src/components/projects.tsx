@@ -138,13 +138,19 @@ const TileOverlay: React.FC<OverlayProps> = ({ project, initialRect, onClose }) 
           </div>
           {/* Visit Site button */}
           <a
-            href={project.link}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="mt-6 inline-block px-8 py-3 bg-white text-[#000B58] font-kalnia border-2 border-[#000B58] transition-transform duration-300 hover:scale-105"
-          >
-            Visit Site
-          </a>
+  href={project.link}
+  target="_blank"
+  rel="noopener noreferrer"
+  className="mt-6 inline-block px-8 py-3 bg-[#000B58] text-white font-kalnia border-2 border-white transition-all duration-300 hover:scale-105 hover:bg-[#98DED9] hover:border-[#98DED9] hover:text-black"
+>
+  Visit Site
+</a>
+
+
+
+
+
+
         </div>
       </div>
 
