@@ -64,7 +64,7 @@ const Projects: React.FC = () => {
         </h2>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-x-12 gap-y-8 max-w-4xl mx-auto">
           {projects.map((project, index) => (
-            // The wrapper remains exactly the size of the tile and is relative for absolute positioning.
+          
             <div
               key={index}
               onMouseEnter={() => {
@@ -75,10 +75,10 @@ const Projects: React.FC = () => {
                 setHoveredIndex(index);
               }}
               onMouseLeave={() => {
-                // Delay the resetting of hovered state by 700ms
+               
                 timeoutRef.current = setTimeout(() => {
                   setHoveredIndex(null);
-                }, 700); // <-- Adjust the delay here (700ms)
+                }, 700); // 
               }}
               className={`
                 relative inline-block overflow-visible transition-transform duration-500
@@ -93,7 +93,6 @@ const Projects: React.FC = () => {
                 <ProjectCard imageUrl={project.imageUrl} alt={project.alt} />
               </div>
 
-              {/* Buttons container: positioned completely outside the tile on the side */}
               <div
                 className={`
                   absolute top-1/2 -translate-y-1/2 transition-opacity duration-500 ease-in-out
