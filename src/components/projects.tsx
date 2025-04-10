@@ -9,6 +9,8 @@ interface ProjectProps {
   alt: string;
   link: string;
   buttonSide: "left" | "right";
+  description: string;
+  rating: number;
 }
 
 const ProjectCard: React.FC<{ imageUrl: string; alt: string }> = ({ imageUrl, alt }) => {
@@ -17,14 +19,18 @@ const ProjectCard: React.FC<{ imageUrl: string; alt: string }> = ({ imageUrl, al
       className="bg-white shadow-md overflow-hidden flex justify-center items-center border-2 border-solid border-black transition-transform duration-500"
       style={{ width: "15rem", height: "16rem" }}
     >
-      <img src={imageUrl} alt={alt} className="max-h-32 max-w-32 object-contain" />
+      <img
+        src={imageUrl}
+        alt={alt}
+        className="max-h-32 max-w-32 object-contain"
+      />
     </div>
   );
 };
 
-//////////////////////////////////////////////
-// Overlay Component for Tile Animation
-//////////////////////////////////////////////
+////////////////////////////////////////
+// Overlay Component (Detail View)
+////////////////////////////////////////
 interface OverlayProps {
   project: ProjectProps;
   initialRect: DOMRect;
@@ -32,28 +38,43 @@ interface OverlayProps {
 }
 
 const TileOverlay: React.FC<OverlayProps> = ({ project, initialRect, onClose }) => {
-  // We store the animated style in state, initially matching the tile's position/size.
-  const [animStyle, setAnimStyle] = useState<React.CSSProperties>({
+  // We animate this container from the tile's bounding rect to a final size 
+  // that can accommodate the tile + large title side by side, and then the 
+  // description, testimonial, rating, etc. below, all left-aligned.
+  const [containerStyle, setContainerStyle] = useState<React.CSSProperties>({
     position: "fixed",
     top: initialRect.top,
     left: initialRect.left,
     width: initialRect.width,
     height: initialRect.height,
-    transition: "all 700ms ease",
+    transition: "all 600ms ease",
     zIndex: 110,
   });
 
-  // Trigger the animation (to top left with padding) after mounting.
+  const [showDetails, setShowDetails] = useState(false);
+
   useEffect(() => {
-    const timer = setTimeout(() => {
-      setAnimStyle((prev) => ({
+    // Animate the container quickly after mount
+    const timer1 = setTimeout(() => {
+      setContainerStyle((prev) => ({
         ...prev,
         top: "2rem",
         left: "2rem",
+        width: "50rem",  // Enough space for tile + 7xl title side by side
+        height: "auto",  // Let the height grow to fit the content
       }));
     }, 50);
-    return () => clearTimeout(timer);
-  }, []);
+
+    // After container animation, fade in the details
+    const timer2 = setTimeout(() => {
+      setShowDetails(true);
+    }, 600);
+
+    return () => {
+      clearTimeout(timer1);
+      clearTimeout(timer2);
+    };
+  }, [initialRect]);
 
   return (
     <div
@@ -64,28 +85,73 @@ const TileOverlay: React.FC<OverlayProps> = ({ project, initialRect, onClose }) 
         width: "100%",
         height: "100%",
         backgroundColor: "#000B58",
-        transition: "background-color 700ms ease",
+        transition: "background-color 600ms ease",
         zIndex: 100,
+        overflowY: "auto",
       }}
     >
-      <div style={animStyle}>
-        {/* Render the entire tile */}
-        <ProjectCard imageUrl={project.imageUrl} alt={project.alt} />
+      {/* 
+        Container for tile+title in the first row, 
+        then the rest of the details below.
+        Removed the white border around this container. 
+      */}
+      <div style={containerStyle} className="p-4 flex flex-col items-start gap-6">
+        {/* First row: tile (with white border) + big title side by side */}
+        <div className="flex items-start gap-6 w-full">
+          {/* 
+            The tile itself with a white border override (instead of black).
+            If you want the original black border from the tile, 
+            simply remove 'border-2 border-white' from here.
+          */}
+          <div className="border-2 border-white">
+            <ProjectCard imageUrl={project.imageUrl} alt={project.alt} />
+          </div>
+          <h1 className="text-7xl font-kalnia text-white self-center">
+            {project.alt}
+          </h1>
+        </div>
+
+        {/* Second row: description, testimonial, rating, etc., left-aligned below */}
+        <div 
+          className={`transition-opacity duration-500 ease-in-out ${
+            showDetails ? "opacity-100" : "opacity-0"
+          }`}
+        >
+          {/* Description (Joan font) */}
+          <p className="mt-4 text-xl font-joan text-white">
+            {project.description}
+          </p>
+          {/* Testimonial */}
+          <p className="mt-4 text-lg font-joan italic text-white">
+            "Working with {project.alt} has been a game-changer. Their 
+            innovative approach and customer-first mindset have 
+            significantly boosted our efficiency."
+          </p>
+          {/* Rating + Stars */}
+          <div className="mt-4">
+            <span className="text-2xl text-white">
+              Rating: {project.rating.toFixed(1)}/5
+            </span>
+            <div className="flex items-center gap-1 mt-2">
+              {renderStars(project.rating)}
+            </div>
+          </div>
+          {/* Visit Site button */}
+          <a
+            href={project.link}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-6 inline-block px-8 py-3 bg-white text-[#000B58] font-kalnia border-2 border-[#000B58] transition-transform duration-300 hover:scale-105"
+          >
+            Visit Site
+          </a>
+        </div>
       </div>
+
+      {/* Close button: top-right corner, red hover */}
       <button
         onClick={onClose}
-        style={{
-          position: "fixed",
-          top: "1rem",
-          right: "1rem",
-          padding: "0.5rem 1rem",
-          background: "white",
-          color: "#000B58",
-          border: "2px solid #000B58",
-          fontFamily: "kalnia, sans-serif",
-          cursor: "pointer",
-          zIndex: 120,
-        }}
+        className="fixed top-4 right-4 px-4 py-2 bg-white text-[#000B58] font-kalnia border-2 border-[#000B58] transition-transform duration-300 hover:scale-105 hover:bg-red-600 hover:text-white"
       >
         Close
       </button>
@@ -93,41 +159,90 @@ const TileOverlay: React.FC<OverlayProps> = ({ project, initialRect, onClose }) 
   );
 };
 
-//////////////////////////////////////////////
+
+
+
+
+// Helper function to render star icons
+const renderStars = (rating: number) => {
+  const stars = [];
+  const fullStars = Math.floor(rating);
+  const hasHalf = rating - fullStars >= 0.5;
+  const emptyStars = 5 - fullStars - (hasHalf ? 1 : 0);
+
+  for (let i = 0; i < fullStars; i++) {
+    stars.push(
+      <span key={`full-${i}`} className="text-yellow-400 text-2xl">
+        ★
+      </span>
+    );
+  }
+  if (hasHalf) {
+    stars.push(
+      <span key="half" className="text-yellow-400 text-2xl">
+        ⯪
+      </span>
+    );
+  }
+  for (let i = 0; i < emptyStars; i++) {
+    stars.push(
+      <span key={`empty-${i}`} className="text-yellow-400 text-2xl">
+        ☆
+      </span>
+    );
+  }
+  return stars;
+};
+
+////////////////////////////////////////
 // Main Projects Component (Grid View)
-//////////////////////////////////////////////
+////////////////////////////////////////
 const Projects: React.FC = () => {
   const projects: ProjectProps[] = [
     {
       imageUrl: techcitymobilelogo,
-      alt: "Tech City Mobile Logo",
+      alt: "Tech City Mobile",
       link: "https://techcitymobile.example.com",
       buttonSide: "left",
+      description:
+        "Tech City Mobile offers seamless connectivity, innovative mobile solutions, and a user-friendly interface that adapts to modern technology demands. Their approach to integrating advanced features sets them apart in the competitive telecom market.",
+      rating: 4.3,
     },
     {
       imageUrl: grclogo,
-      alt: "GR&C Logo",
+      alt: "GR&C",
       link: "https://grc.example.com",
       buttonSide: "right",
+      description:
+        "GR&C is dedicated to providing dependable, cutting-edge financial solutions with a focus on transparency and customer satisfaction. Their innovative systems streamline complex transactions with ease.",
+      rating: 4.5,
     },
     {
       imageUrl: vihelogo,
-      alt: "Vihe Logo",
+      alt: "Vihe",
       link: "https://vihe.example.com",
       buttonSide: "left",
+      description:
+        "Vihe brings creative digital experiences to life by merging state-of-the-art design with user-centric features. Their commitment to excellence is evident in every project they undertake.",
+      rating: 4.7,
     },
     {
       imageUrl: oneprofitlogo,
-      alt: "One Profit Logo",
+      alt: "One Profit",
       link: "https://oneprofit.example.com",
       buttonSide: "right",
+      description:
+        "One Profit specializes in profit-driven strategies that leverage the latest technology trends. Their expert team delivers solutions that maximize efficiency and ensure sustainable growth in a dynamic marketplace.",
+      rating: 4.4,
     },
   ];
 
   const [hoveredIndex, setHoveredIndex] = useState<number | null>(null);
-  const [selectedProject, setSelectedProject] = useState<{ project: ProjectProps; rect: DOMRect } | null>(null);
-  
-  // Refs to store each tile element
+  const [selectedProject, setSelectedProject] = useState<{
+    project: ProjectProps;
+    rect: DOMRect;
+  } | null>(null);
+
   const tileRefs = useRef<{ [key: number]: HTMLDivElement | null }>({});
 
   const handleMoreClick = (index: number, project: ProjectProps) => {
@@ -206,7 +321,6 @@ const Projects: React.FC = () => {
                 <div className="z-10">
                   <ProjectCard imageUrl={project.imageUrl} alt={project.alt} />
                 </div>
-                {/* Buttons container, showing both the "Visit Site" and "More" buttons */}
                 <div
                   className={`
                     absolute top-1/2 -translate-y-1/2 transition-opacity duration-500 ease-in-out
@@ -221,7 +335,11 @@ const Projects: React.FC = () => {
                       rel="noopener noreferrer"
                       className={`
                         min-w-[8rem] bg-[#000B58] text-white py-2 px-3 text-center text-base font-kalnia rounded-none
-                        custom-button ${project.buttonSide === "left" ? "custom-button-left" : "custom-button-right"}
+                        custom-button ${
+                          project.buttonSide === "left"
+                            ? "custom-button-left"
+                            : "custom-button-right"
+                        }
                       `}
                     >
                       Visit Site
@@ -230,7 +348,11 @@ const Projects: React.FC = () => {
                       onClick={() => handleMoreClick(index, project)}
                       className={`
                         min-w-[8rem] bg-[#000B58] text-white py-2 px-3 text-center text-base font-kalnia rounded-none hover:cursor-pointer
-                        custom-button ${project.buttonSide === "left" ? "custom-button-left" : "custom-button-right"}
+                        custom-button ${
+                          project.buttonSide === "left"
+                            ? "custom-button-left"
+                            : "custom-button-right"
+                        }
                       `}
                     >
                       More
