@@ -11,6 +11,7 @@ interface ProjectProps {
   buttonSide: "left" | "right";
   description: string;
   rating: number;
+  testimonial: string;  // New property for testimonial text
 }
 
 const ProjectCard: React.FC<{ imageUrl: string; alt: string }> = ({ imageUrl, alt }) => {
@@ -38,8 +39,8 @@ interface OverlayProps {
 }
 
 const TileOverlay: React.FC<OverlayProps> = ({ project, initialRect, onClose }) => {
-  // We animate this container from the tile's bounding rect to a final size 
-  // that can accommodate the tile + large title side by side, and then the 
+  // Animate the container from the tile's bounding rect to a final size
+  // that can accommodate the tile + large title side by side, and then the
   // description, testimonial, rating, etc. below, all left-aligned.
   const [containerStyle, setContainerStyle] = useState<React.CSSProperties>({
     position: "fixed",
@@ -51,28 +52,35 @@ const TileOverlay: React.FC<OverlayProps> = ({ project, initialRect, onClose }) 
     zIndex: 110,
   });
 
+  const [showTitle, setShowTitle] = useState(false);
   const [showDetails, setShowDetails] = useState(false);
 
   useEffect(() => {
-    // Animate the container quickly after mount
+    // Animate the container from its initial position to the final layout
     const timer1 = setTimeout(() => {
       setContainerStyle((prev) => ({
         ...prev,
         top: "2rem",
         left: "2rem",
-        width: "50rem",  // Enough space for tile + 7xl title side by side
-        height: "auto",  // Let the height grow to fit the content
+        width: "50rem", // Enough space for tile + 7xl title side by side
+        height: "auto", // Let the height grow to fit the content
       }));
     }, 50);
 
-    // After container animation, fade in the details
-    const timer2 = setTimeout(() => {
-      setShowDetails(true);
+    // Fade in the title first
+    const titleTimer = setTimeout(() => {
+      setShowTitle(true);
     }, 600);
+
+    // Fade in the rest of the details afterward
+    const detailsTimer = setTimeout(() => {
+      setShowDetails(true);
+    }, 900);
 
     return () => {
       clearTimeout(timer1);
-      clearTimeout(timer2);
+      clearTimeout(titleTimer);
+      clearTimeout(detailsTimer);
     };
   }, [initialRect]);
 
@@ -90,43 +98,34 @@ const TileOverlay: React.FC<OverlayProps> = ({ project, initialRect, onClose }) 
         overflowY: "auto",
       }}
     >
-      {/* 
-        Container for tile+title in the first row, 
-        then the rest of the details below.
-        Removed the white border around this container. 
-      */}
       <div style={containerStyle} className="p-4 flex flex-col items-start gap-6">
         {/* First row: tile (with white border) + big title side by side */}
         <div className="flex items-start gap-6 w-full">
-          {/* 
-            The tile itself with a white border override (instead of black).
-            If you want the original black border from the tile, 
-            simply remove 'border-2 border-white' from here.
-          */}
           <div className="border-2 border-white">
             <ProjectCard imageUrl={project.imageUrl} alt={project.alt} />
           </div>
-          <h1 className="text-7xl font-kalnia text-white self-center whitespace-nowrap">
-  {project.alt}
-</h1>
-
+          <h1
+            className="text-7xl font-kalnia text-white self-center whitespace-nowrap"
+            style={{
+              opacity: showTitle ? 1 : 0,
+              transition: "opacity 500ms ease-in-out",
+            }}
+          >
+            {project.alt}
+          </h1>
         </div>
 
         {/* Second row: description, testimonial, rating, etc., left-aligned below */}
-        <div 
+        <div
           className={`transition-opacity duration-500 ease-in-out ${
             showDetails ? "opacity-100" : "opacity-0"
           }`}
         >
           {/* Description (Joan font) */}
-          <p className="mt-4 text-xl font-joan text-white">
-            {project.description}
-          </p>
-          {/* Testimonial */}
+          <p className="mt-4 text-xl font-joan text-white">{project.description}</p>
+          {/* Testimonial using project-specific testimonial */}
           <p className="mt-4 text-lg font-joan italic text-white">
-            "Working with {project.alt} has been a game-changer. Their 
-            innovative approach and customer-first mindset have 
-            significantly boosted our efficiency."
+            "{project.testimonial}"
           </p>
           {/* Rating + Stars */}
           <div className="mt-4">
@@ -139,19 +138,13 @@ const TileOverlay: React.FC<OverlayProps> = ({ project, initialRect, onClose }) 
           </div>
           {/* Visit Site button */}
           <a
-  href={project.link}
-  target="_blank"
-  rel="noopener noreferrer"
-  className="mt-6 inline-block px-8 py-3 bg-[#000B58] text-white font-kalnia border-2 border-white transition-all duration-300 hover:scale-105 hover:bg-[#98DED9] hover:border-[#98DED9] hover:text-black"
->
-  Visit Site
-</a>
-
-
-
-
-
-
+            href={project.link}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-6 inline-block px-8 py-3 bg-[#000B58] text-white font-kalnia border-2 border-white transition-all duration-300 hover:scale-105 hover:bg-[#98DED9] hover:border-[#98DED9] hover:text-black"
+          >
+            Visit Site
+          </a>
         </div>
       </div>
 
@@ -166,11 +159,9 @@ const TileOverlay: React.FC<OverlayProps> = ({ project, initialRect, onClose }) 
   );
 };
 
-
-
-
-
-// Helper function to render star icons
+////////////////////////////////////////
+// Helper Function to Render Star Icons
+////////////////////////////////////////
 const renderStars = (rating: number) => {
   const stars = [];
   const fullStars = Math.floor(rating);
@@ -205,42 +196,51 @@ const renderStars = (rating: number) => {
 // Main Projects Component (Grid View)
 ////////////////////////////////////////
 const Projects: React.FC = () => {
+  // We rearranged the projects so that:
+  //  index=0 => One Profit (top-left)
+  //  index=1 => Tech City Mobile (top-right)
+  //  index=2 => Govardhan Retreat Centre (bottom-left)
+  //  index=3 => Vihe Publications (bottom-right)
   const projects: ProjectProps[] = [
-    {
-      imageUrl: techcitymobilelogo,
-      alt: "Tech City Mobile",
-      link: "https://techcitymobile.example.com",
-      buttonSide: "left",
-      description:
-        "Tech City Mobile offers seamless connectivity, innovative mobile solutions, and a user-friendly interface that adapts to modern technology demands. Their approach to integrating advanced features sets them apart in the competitive telecom market.",
-      rating: 4.3,
-    },
-    {
-      imageUrl: grclogo,
-      alt: "GR&C",
-      link: "https://grc.example.com",
-      buttonSide: "right",
-      description:
-        "GR&C is dedicated to providing dependable, cutting-edge financial solutions with a focus on transparency and customer satisfaction. Their innovative systems streamline complex transactions with ease.",
-      rating: 4.5,
-    },
-    {
-      imageUrl: vihelogo,
-      alt: "Vihe",
-      link: "https://vihe.example.com",
-      buttonSide: "left",
-      description:
-        "Vihe brings creative digital experiences to life by merging state-of-the-art design with user-centric features. Their commitment to excellence is evident in every project they undertake.",
-      rating: 4.7,
-    },
     {
       imageUrl: oneprofitlogo,
       alt: "One Profit",
-      link: "https://oneprofit.example.com",
-      buttonSide: "right",
+      link: "https://www.oneprofit.in",
+      buttonSide: "left",
       description:
         "One Profit specializes in profit-driven strategies that leverage the latest technology trends. Their expert team delivers solutions that maximize efficiency and ensure sustainable growth in a dynamic marketplace.",
       rating: 4.4,
+      testimonial: "One Profit's strategies have significantly boosted our efficiency and growth.",
+    },
+    {
+      imageUrl: techcitymobilelogo,
+      alt: "Tech City Mobile",
+      link: "https://techcitymobile.ca",
+      buttonSide: "right",
+      description:
+        "Tech City Mobile offers seamless connectivity, innovative mobile solutions, and a user-friendly interface that adapts to modern technology demands. Their approach to integrating advanced features sets them apart in the competitive telecom market.",
+      rating: 4.3,
+      testimonial: "Tech City Mobile transformed our business communication with their innovative solutions!",
+    },
+    {
+      imageUrl: grclogo,
+      alt: "Govardhan Retreat Centre",
+      link: "https://govardhanretreatcenter.com",
+      buttonSide: "left",
+      description:
+        "Govardhan Retreat Centre is a spiritual sanctuary focused on healthy living, sustainability, and personal growth. Surrounded by natural beauty, it offers a rejuvenating experience through yoga, organic farming, and holistic well-being.",
+      rating: 4.7,
+      testimonial: "My stay at Govardhan Retreat Centre was an incredible spiritual and rejuvenating experience!",
+    },
+    {
+      imageUrl: vihelogo,
+      alt: "Vihe Publications",
+      link: "https://vihepublications.com/en/",
+      buttonSide: "right",
+      description:
+        "Vihe Publications provides a wealth of spiritual and educational resources, combining authentic scriptural wisdom with modern presentation. Their dedication to quality and accessibility has made them a global resource for seekers and practitioners.",
+      rating: 4.7,
+      testimonial: "Vihe Publications truly revolutionized our understanding of spiritual studies.",
     },
   ];
 
@@ -342,11 +342,7 @@ const Projects: React.FC = () => {
                       rel="noopener noreferrer"
                       className={`
                         min-w-[8rem] bg-[#000B58] text-white py-2 px-3 text-center text-base font-kalnia rounded-none
-                        custom-button ${
-                          project.buttonSide === "left"
-                            ? "custom-button-left"
-                            : "custom-button-right"
-                        }
+                        custom-button ${project.buttonSide === "left" ? "custom-button-left" : "custom-button-right"}
                       `}
                     >
                       Visit Site
@@ -355,11 +351,7 @@ const Projects: React.FC = () => {
                       onClick={() => handleMoreClick(index, project)}
                       className={`
                         min-w-[8rem] bg-[#000B58] text-white py-2 px-3 text-center text-base font-kalnia rounded-none hover:cursor-pointer
-                        custom-button ${
-                          project.buttonSide === "left"
-                            ? "custom-button-left"
-                            : "custom-button-right"
-                        }
+                        custom-button ${project.buttonSide === "left" ? "custom-button-left" : "custom-button-right"}
                       `}
                     >
                       More
