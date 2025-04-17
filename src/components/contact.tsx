@@ -10,13 +10,54 @@ const Contact: React.FC = () => {
       id="contact"
       className="bg-[#000B58] w-full px-6 pt-0 pb-12 md:pb-20"
     >
-      <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-start gap-12">
-        
-        {/* ── Left column: contact info + heading ── */}
-        <div className="flex flex-col space-y-12 md:w-1/2">
+      {/* Custom CSS for button hover effect (same as in Project.tsx) */}
+      <style>{`
+        .custom-button {
+          position: relative;
+          overflow: hidden;
+          transition: transform 300ms ease, color 300ms ease, border-color 300ms ease;
+          --slide-duration: 0ms;
+          font-family: "kalnia", serif !important;
+        }
+        .custom-button:hover {
+          --slide-duration: 300ms;
+        }
+        .custom-button::before {
+          content: "";
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 100%;
+          height: 100%;
+          background-color: white;
+          z-index: -1;
+          transition: transform var(--slide-duration) ease-in;
+        }
+        .custom-button-left::before {
+          transform: translateX(-100%);
+        }
+        .custom-button-right::before {
+          transform: translateX(100%);
+        }
+        .custom-button:hover::before {
+          transform: translateX(0);
+        }
+        .custom-button:hover {
+          color: black !important;
+          background-color: white !important;
+          border: 2px solid black !important;
+          transform: scale(1.05);
+        }
+      `}</style>
 
-          {/* Contact info (added top margin mt-8) */}
-          <div className="mt-24 flex flex-col space-y-4 font-kadwa text-white text-l">
+      <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-start gap-12">
+        {/* ── Left column: title + contact info ── */}
+        <div className="flex flex-col space-y-12 md:w-1/2">
+          <h2 className="mt-24 mr-8 mb-3 -ml-3 font-kalnia text-[3.375rem] uppercase leading-tight text-white">
+            Get in touch with me
+          </h2>
+
+          <div className="mt-24 flex flex-col space-y-4 font-kadwa text-white text-[1.1rem]">
             <div className="flex items-center space-x-4">
               <FontAwesomeIcon icon={faEnvelope} className="text-xl" />
               <span>aman33malik@gmail.com</span>
@@ -30,11 +71,6 @@ const Contact: React.FC = () => {
               <span>linkedin.com/in/aman33</span>
             </div>
           </div>
-
-   
-          <h2 className="  font-kalnia text-4xl uppercase leading-tight text-white">
-            " Get in touch with me "
-          </h2>
         </div>
 
         {/* ── Right column: form ── */}
@@ -43,9 +79,7 @@ const Contact: React.FC = () => {
             <h3 className="font-kalnia text-2xl">Contact form</h3>
 
             <div className="flex flex-col space-y-2">
-              <label htmlFor="name" className="block font-medium">
-                Name
-              </label>
+              <label htmlFor="name" className="block font-medium">Name</label>
               <input
                 id="name"
                 type="text"
@@ -54,9 +88,7 @@ const Contact: React.FC = () => {
             </div>
 
             <div className="flex flex-col space-y-2">
-              <label htmlFor="email" className="block font-medium">
-                Email
-              </label>
+              <label htmlFor="email" className="block font-medium">Email</label>
               <input
                 id="email"
                 type="email"
@@ -65,9 +97,7 @@ const Contact: React.FC = () => {
             </div>
 
             <div className="flex flex-col space-y-2">
-              <label htmlFor="message" className="block font-medium">
-                Message
-              </label>
+              <label htmlFor="message" className="block font-medium">Message</label>
               <textarea
                 id="message"
                 rows={5}
@@ -77,13 +107,12 @@ const Contact: React.FC = () => {
 
             <button
               type="submit"
-              className="self-start bg-[#000B58] text-white px-6 py-2"
+              className="self-start font-kalnia bg-[#000B58] text-white px-6 py-2 border-2 border-[#000B58] custom-button custom-button-left"
             >
               Send Message
             </button>
           </form>
         </div>
-        
       </div>
     </section>
   );
