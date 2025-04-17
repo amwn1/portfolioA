@@ -57,10 +57,17 @@ const Contact: React.FC = () => {
             Get in touch with me
           </h2>
 
-          <div className="mt-24 flex flex-col space-y-4 font-kadwa text-white text-[1.1rem]">
+          <div className="mt-24 flex flex-col space-y-4 font-kadwa text-white text-[1.125rem]">
             <div className="flex items-center space-x-4">
               <FontAwesomeIcon icon={faEnvelope} className="text-xl" />
-              <span>aman33malik@gmail.com</span>
+              <a
+                href="https://mail.google.com/mail/?view=cm&fs=1&to=aman33malik@gmail.com"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-white"
+              >
+                aman33malik@gmail.com
+              </a>
             </div>
             <div className="flex items-center space-x-4">
               <FontAwesomeIcon icon={faPhoneAlt} className="text-xl" />
@@ -68,40 +75,56 @@ const Contact: React.FC = () => {
             </div>
             <div className="flex items-center space-x-4">
               <FontAwesomeIcon icon={faLinkedin} className="text-xl" />
-              <span>linkedin.com/in/aman33</span>
+              <a
+                href="https://www.linkedin.com/in/aman-malik-871941178/"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="text-white"
+              >
+                Aman Malik
+              </a>
             </div>
           </div>
         </div>
 
         {/* ── Right column: form ── */}
         <div className="md:w-1/2 w-full">
-          <form className="bg-white p-8 shadow-md text-black flex flex-col space-y-6">
+          <form className="bg-white p-8 shadow-md text-black flex flex-col space-y-8">
             <h3 className="font-kalnia text-2xl">Contact form</h3>
 
-            <div className="flex flex-col space-y-2">
-              <label htmlFor="name" className="block font-medium">Name</label>
+            {/* Name input with placeholder and Kalnia font */}
+            <div>
               <input
                 id="name"
                 type="text"
-                className="w-full border-b border-gray-400 focus:outline-none py-2"
+                placeholder="Name"
+                className="font-kalnia w-full border-b border-gray-400 focus:outline-none py-2"
+                onFocus={e => (e.currentTarget.placeholder = '')}
+                onBlur={e => (e.currentTarget.placeholder = 'Name')}
               />
             </div>
 
-            <div className="flex flex-col space-y-2">
-              <label htmlFor="email" className="block font-medium">Email</label>
+            {/* Email input with placeholder and Kalnia font */}
+            <div>
               <input
                 id="email"
                 type="email"
-                className="w-full border-b border-gray-400 focus:outline-none py-2"
+                placeholder="Email"
+                className="font-kalnia w-full border-b border-gray-400 focus:outline-none py-2"
+                onFocus={e => (e.currentTarget.placeholder = '')}
+                onBlur={e => (e.currentTarget.placeholder = 'Email')}
               />
             </div>
 
-            <div className="flex flex-col space-y-2">
-              <label htmlFor="message" className="block font-medium">Message</label>
+            {/* Message textarea with Kalnia label */}
+            <div className="flex flex-col space-y-4">
+              <label htmlFor="message" className="block font-kalnia font-medium">
+                Message
+              </label>
               <textarea
                 id="message"
                 rows={5}
-                className="w-full border border-gray-400 focus:outline-none p-2"
+                className="w-full border border-gray-400 focus:outline-none p-2 font-kalnia"
               />
             </div>
 
