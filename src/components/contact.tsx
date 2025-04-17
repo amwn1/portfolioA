@@ -1,7 +1,10 @@
 // src/components/Contact.tsx
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEnvelope, faPhoneAlt, faMapMarkerAlt } from '@fortawesome/free-solid-svg-icons';
+import {
+  faEnvelope,
+  faPhoneAlt
+} from '@fortawesome/free-solid-svg-icons';
 import { faLinkedin } from '@fortawesome/free-brands-svg-icons';
 
 const Contact: React.FC = () => {
@@ -49,7 +52,7 @@ const Contact: React.FC = () => {
       `}</style>
 
       <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-start gap-12">
-        {/* Left column: title + contact info */}
+        {/* ── Left column: title + contact info ── */}
         <div className="flex flex-col space-y-12 md:w-1/2">
           <h2 className="mt-24 mr-8 mb-3 -ml-3 font-kalnia text-[3.375rem] uppercase leading-tight text-white">
             Get in touch with me
@@ -85,17 +88,22 @@ const Contact: React.FC = () => {
           </div>
         </div>
 
-        {/* Right column: form */}
+        {/* ── Right column: working form ── */}
         <div className="md:w-1/2 w-full">
-          <form className="bg-gray-50 p-8 shadow-md text-black flex flex-col space-y-8">
+          <form
+            action="https://formspree.io/f/mgvajegr"
+            method="POST"
+            className="bg-gray-50 p-8 shadow-md text-black flex flex-col space-y-8"
+          >
             <h3 className="font-kalnia text-2xl">Contact form</h3>
 
             {/* Name input */}
             <div>
               <input
-                id="name"
+                name="name"
                 type="text"
                 placeholder="Name"
+                required
                 className="font-kalnia w-full bg-gray-50 border-b border-gray-400 focus:outline-none py-2"
                 onFocus={e => (e.currentTarget.placeholder = '')}
                 onBlur={e => (e.currentTarget.placeholder = 'Name')}
@@ -105,9 +113,10 @@ const Contact: React.FC = () => {
             {/* Email input */}
             <div>
               <input
-                id="email"
+                name="email"
                 type="email"
                 placeholder="Email"
+                required
                 className="font-kalnia w-full bg-gray-50 border-b border-gray-400 focus:outline-none py-2"
                 onFocus={e => (e.currentTarget.placeholder = '')}
                 onBlur={e => (e.currentTarget.placeholder = 'Email')}
@@ -120,8 +129,10 @@ const Contact: React.FC = () => {
                 Message
               </label>
               <textarea
+                name="message"
                 id="message"
                 rows={5}
+                required
                 className="w-full bg-white border border-gray-400 focus:outline-none p-2 font-kalnia"
               />
             </div>
