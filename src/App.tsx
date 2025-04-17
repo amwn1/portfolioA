@@ -6,6 +6,7 @@ import Landingpage from "./components/landingpage"; // Import the Header compone
 import AboutMe from "./components/aboutme";
 import Experience from "./components/experience";
 import Projects from "./components/projects";
+import Contact from "./components/contact";
 
 function App() {
   return (
@@ -14,6 +15,7 @@ function App() {
       <AboutMe />
       <Experience />
       <Projects />
+      <Contact />
     </div>
   );
 }

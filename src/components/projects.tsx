@@ -29,9 +29,6 @@ const ProjectCard: React.FC<{ imageUrl: string; alt: string }> = ({ imageUrl, al
   );
 };
 
-////////////////////////////////////////
-// Overlay Component (Detail View)
-////////////////////////////////////////
 interface OverlayProps {
   project: ProjectProps;
   initialRect: DOMRect;
