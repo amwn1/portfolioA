@@ -1,16 +1,16 @@
 // src/components/Contact.tsx
 import React from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faEnvelope, faPhoneAlt } from '@fortawesome/free-solid-svg-icons';
+import { faEnvelope, faPhoneAlt, faMapMarkerAlt } from '@fortawesome/free-solid-svg-icons';
 import { faLinkedin } from '@fortawesome/free-brands-svg-icons';
 
 const Contact: React.FC = () => {
   return (
     <section
       id="contact"
-      className="bg-[#000B58] w-full px-6 pt-0 pb-12 md:pb-20"
+      className="bg-[#000B58] w-full px-6 pt-0 pb-24 md:pb-32"
     >
-      {/* Custom CSS for button hover effect (same as in Project.tsx) */}
+      {/* Custom CSS for button hover effect */}
       <style>{`
         .custom-button {
           position: relative;
@@ -25,10 +25,8 @@ const Contact: React.FC = () => {
         .custom-button::before {
           content: "";
           position: absolute;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 100%;
+          top: 0; left: 0;
+          width: 100%; height: 100%;
           background-color: white;
           z-index: -1;
           transition: transform var(--slide-duration) ease-in;
@@ -51,7 +49,7 @@ const Contact: React.FC = () => {
       `}</style>
 
       <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-start gap-12">
-        {/* ── Left column: title + contact info ── */}
+        {/* Left column: title + contact info */}
         <div className="flex flex-col space-y-12 md:w-1/2">
           <h2 className="mt-24 mr-8 mb-3 -ml-3 font-kalnia text-[3.375rem] uppercase leading-tight text-white">
             Get in touch with me
@@ -87,36 +85,36 @@ const Contact: React.FC = () => {
           </div>
         </div>
 
-        {/* ── Right column: form ── */}
+        {/* Right column: form */}
         <div className="md:w-1/2 w-full">
-          <form className="bg-white p-8 shadow-md text-black flex flex-col space-y-8">
+          <form className="bg-gray-50 p-8 shadow-md text-black flex flex-col space-y-8">
             <h3 className="font-kalnia text-2xl">Contact form</h3>
 
-            {/* Name input with placeholder and Kalnia font */}
+            {/* Name input */}
             <div>
               <input
                 id="name"
                 type="text"
                 placeholder="Name"
-                className="font-kalnia w-full border-b border-gray-400 focus:outline-none py-2"
+                className="font-kalnia w-full bg-gray-50 border-b border-gray-400 focus:outline-none py-2"
                 onFocus={e => (e.currentTarget.placeholder = '')}
                 onBlur={e => (e.currentTarget.placeholder = 'Name')}
               />
             </div>
 
-            {/* Email input with placeholder and Kalnia font */}
+            {/* Email input */}
             <div>
               <input
                 id="email"
                 type="email"
                 placeholder="Email"
-                className="font-kalnia w-full border-b border-gray-400 focus:outline-none py-2"
+                className="font-kalnia w-full bg-gray-50 border-b border-gray-400 focus:outline-none py-2"
                 onFocus={e => (e.currentTarget.placeholder = '')}
                 onBlur={e => (e.currentTarget.placeholder = 'Email')}
               />
             </div>
 
-            {/* Message textarea with Kalnia label */}
+            {/* Message textarea */}
             <div className="flex flex-col space-y-4">
               <label htmlFor="message" className="block font-kalnia font-medium">
                 Message
@@ -124,7 +122,7 @@ const Contact: React.FC = () => {
               <textarea
                 id="message"
                 rows={5}
-                className="w-full border border-gray-400 focus:outline-none p-2 font-kalnia"
+                className="w-full bg-white border border-gray-400 focus:outline-none p-2 font-kalnia"
               />
             </div>
 
