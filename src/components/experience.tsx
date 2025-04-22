@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
 import { IoLogoJavascript, IoIosArrowDown } from 'react-icons/io';
-import { FaReact, FaNodeJs, FaGitAlt, FaWordpress, FaAws } from "react-icons/fa";
-import { SiTypescript } from 'react-icons/si';
-import { BiLogoTailwindCss } from "react-icons/bi";
+import { FaReact, FaNodeJs, FaGitAlt, FaWordpress, FaAws } from 'react-icons/fa';
+import { SiTypescript, SiCplusplus } from 'react-icons/si';
 import { motion, AnimatePresence } from 'framer-motion';
 import IconComponent from './IconComponent';
 
@@ -19,6 +18,11 @@ const Experience: React.FC = () => {
       description: 'Adding type safety to JavaScript for more robust applications.'
     },
     {
+      name: 'C++',
+      icon: SiCplusplus,
+      description: 'Writing efficient, performance-critical applications with strong memory management.'
+    },
+    {
       name: 'React',
       icon: FaReact,
       description: 'Creating reusable UI components for modern web applications.'
@@ -29,17 +33,12 @@ const Experience: React.FC = () => {
       description: 'Building scalable server-side applications and APIs.'
     },
     {
-      name: 'Tailwind CSS',
-      icon: BiLogoTailwindCss,
-      description: 'Rapidly building custom user interfaces with utility classes.'
-    },
-    {
       name: 'Git',
       icon: FaGitAlt,
       description: 'Version control and collaborative development workflows.'
     },
     {
-      name: 'Wordpress',
+      name: 'WordPress',
       icon: FaWordpress,
       description: 'Creating and customizing content management systems.'
     },
@@ -156,8 +155,7 @@ const Experience: React.FC = () => {
               whileInView="visible"
               viewport={{ once: true, amount: 0.25 }}
             >
-              {/* Experience Items */}
-              {experienceItems.map((item, index) => (
+              {experienceItems.map(item => (
                 <TimelineItem
                   key={item.id}
                   item={item}
@@ -185,8 +183,7 @@ const Experience: React.FC = () => {
               whileInView="visible"
               viewport={{ once: true, amount: 0.25 }}
             >
-              {/* Education Items */}
-              {educationItems.map((item, index) => (
+              {educationItems.map(item => (
                 <TimelineItem
                   key={item.id}
                   item={item}
@@ -197,7 +194,7 @@ const Experience: React.FC = () => {
             </motion.div>
           </div>
         </div>
-        {/* Skills Section - No staggered animation */}
+        {/* Skills Section */}
         <motion.div
           className="mt-16"
           initial={{ opacity: 0 }}
@@ -205,45 +202,27 @@ const Experience: React.FC = () => {
           viewport={{ once: true }}
           transition={{ duration: 0.6 }}
         >
-          <h3 className="text-2xl font-kalnia text-[#98DED9] mb-6">Skills</h3>
+          <h3 className="text-2xl font-kalnia text-[#98DED9] mb-6">Skills +</h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {/* Skill Items - No staggered animation */}
-            {skills.map((skill, index) => (
+            {skills.map((skill, idx) => (
               <motion.div
-                key={index}
+                key={idx}
                 className="bg-[#004080] p-4 rounded-md text-center font-joan relative transition-all duration-300 hover:bg-[#0056b3] group h-[100px] overflow-hidden"
                 initial={{ opacity: 0, y: 20 }}
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
-                transition={{
-                  duration: 0.5,
-                  type: "spring",
-                  damping: 12
-                }}
-                whileHover={{
-                  scale: 1.02,
-                  transition: {
-                    type: 'spring',
-                    stiffness: 260,
-                    damping: 20
-                  }
-                }}
+                transition={{ duration: 0.5, type: "spring", damping: 12 }}
+                whileHover={{ scale: 1.02, transition: { type: 'spring', stiffness: 260, damping: 20 } }}
               >
-                {/* Container with relative positioning */}
                 <div className="w-full h-full relative">
-                  {/* Icon - centered at top by default, moves to left on hover */}
                   <div className="absolute top-0 left-1/2 -translate-x-1/2 transition-all duration-400 ease-out group-hover:left-2 group-hover:translate-x-0 group-hover:top-1/2 group-hover:-translate-y-1/2">
                     <IconComponent icon={skill.icon} className="text-3xl text-white group-hover:text-[#98DED9] transition-colors duration-400" />
                   </div>
-                  {/* Skill name - centered, fades out on hover */}
                   <div className="absolute top-12 left-0 right-0 text-center transition-opacity duration-300 ease-out group-hover:opacity-0">
                     {skill.name}
                   </div>
-                  {/* Description - hidden by default, appears on hover with delay */}
                   <div className="absolute inset-0 flex items-center pl-14 pr-2 opacity-0 transition-opacity duration-300 ease-in-out delay-[0ms] group-hover:opacity-100 group-hover:delay-[250ms]">
-                    <p className="text-sm text-[#98DED9] text-left">
-                      {skill.description}
-                    </p>
+                    <p className="text-sm text-[#98DED9] text-left">{skill.description}</p>
                   </div>
                 </div>
               </motion.div>
@@ -278,61 +257,33 @@ const TimelineItem: React.FC<TimelineItemProps> = ({ item, variants, dotVariants
       onMouseEnter={() => setIsHovered(true)}
       onMouseLeave={() => setIsHovered(false)}
       onClick={() => setIsExpanded(!isExpanded)}
-      whileHover={{
-        x: 5,
-        transition: { duration: 0.2 }
-      }}
+      whileHover={{ x: 5, transition: { duration: 0.2 } }}
       style={{ cursor: 'pointer' }}
     >
-      {/* Animated Timeline Line - Only appears on hover */}
       <motion.div 
         className="absolute left-0 top-0 w-0.5 bg-[#98DED9]"
         initial={{ height: 0 }}
-        animate={{ 
-          height: isHovered ? '85%' : 0,
-        }}
-        transition={{ 
-          duration: 0.3,
-          ease: "easeOut"
-        }}
-        style={{
-          originY: 0 // Animate from top to bottom
-        }}
+        animate={{ height: isHovered ? '85%' : 0 }}
+        transition={{ duration: 0.3, ease: "easeOut" }}
+        style={{ originY: 0 }}
       />
-      
-      {/* Interactive Timeline Dot - Expands and glows on hover */}
       <motion.div 
         className="absolute w-4 h-4 bg-[#98DED9] rounded-full"
-        style={{
-          left: "-2px",
-          top: "0",
-          marginLeft: "-6px",
-          zIndex: 10 // Keep dot above the line
-        }}
+        style={{ left: "-2px", top: "0", marginLeft: "-6px", zIndex: 10 }}
         variants={dotVariants}
-        animate={isHovered ? {
-          scale: 1.5,
-          boxShadow: "0 0 8px 2px rgba(152, 222, 217, 0.7)"
-        } : {
-          scale: 1,
-          boxShadow: "0 0 0px 0px rgba(152, 222, 217, 0)"
-        }}
+        animate={isHovered
+          ? { scale: 1.5, boxShadow: "0 0 8px 2px rgba(152, 222, 217, 0.7)" }
+          : { scale: 1, boxShadow: "0 0 0px 0px rgba(152, 222, 217, 0)" }
+        }
         transition={{ duration: 0.3 }}
       />
-      
-      {/* Card without tilt effect */}
       <motion.div
         className="bg-[#004080]/30 p-4 rounded-md backdrop-blur-sm"
-        whileHover={{
-          scale: 1.02,
-          transition: { duration: 0.2 }
-        }}
+        whileHover={{ scale: 1.02, transition: { duration: 0.2 } }}
       >
         <h4 className="text-xl font-bold font-joan">{item.title}</h4>
         <p className="text-[#98DED9] font-joan">{item.subtitle}</p>
         <p className="mt-2 font-joan">{item.description}</p>
-        
-        {/* Expandable Details */}
         <AnimatePresence>
           {isExpanded && (
             <motion.div
@@ -342,23 +293,12 @@ const TimelineItem: React.FC<TimelineItemProps> = ({ item, variants, dotVariants
               transition={{ duration: 0.3 }}
               className="mt-4 border-t border-[#98DED9]/30 pt-3"
             >
-              <p className="text-sm text-white/90 font-joan whitespace-pre-line">
-                {item.details}
-              </p>
+              <p className="text-sm text-white/90 font-joan whitespace-pre-line">{item.details}</p>
             </motion.div>
           )}
         </AnimatePresence>
-        
-        {/* Arrow indicator using IconComponent */}
-        <motion.div 
-          className="mt-2 text-[#98DED9] flex justify-end"
-          animate={{ opacity: isHovered ? 1 : 0.7 }}
-        >
-          <motion.div
-            animate={{ rotate: isExpanded ? 180 : 0 }}
-            transition={{ duration: 0.3 }}
-            className="text-lg"
-          >
+        <motion.div className="mt-2 text-[#98DED9] flex justify-end" animate={{ opacity: isHovered ? 1 : 0.7 }}>
+          <motion.div animate={{ rotate: isExpanded ? 180 : 0 }} transition={{ duration: 0.3 }} className="text-lg">
             <IconComponent icon={IoIosArrowDown} className="text-lg" />
           </motion.div>
         </motion.div>
