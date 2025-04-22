@@ -2,7 +2,7 @@
 import React from "react";
 import "./App.css";
 import "./index.css";
-import Landingpage from "./components/landingpage"; // Import the Header component here
+import Landingpage from "./components/landingpage";
 import AboutMe from "./components/aboutme";
 import Experience from "./components/experience";
 import Projects from "./components/projects";
@@ -12,10 +12,12 @@ function App() {
   return (
     <div className="App">
       <Landingpage />
-      <AboutMe />
-      <Experience />
-      <Projects />
-      <Contact />
+
+      {/* these ids match the hrefs in Landingpage */}
+      <div id="about"><AboutMe /></div>
+      <div id="experience"><Experience /></div>
+      <div id="projects"><Projects /></div>
+      <div id="contact"><Contact /></div>
     </div>
   );
 }
